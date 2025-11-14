@@ -2,25 +2,27 @@ package com.app.backend.controller;
 
 import com.app.backend.model.User;
 import com.app.backend.service.UserService;
-import com.app.backend.dto.MessageResponse;
+import com.app.backend.Dto.MessageResponse;
+import com.app.backend.Dto.UserCreateRequest;
+import com.app.backend.Dto.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.Http.MediaType;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequesMapping("/api/users")
+@RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
 public class UserController{
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @PostMapping 
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<List<User>> getAllUsers(){
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<User> createUser (@RequestBody UserCreateRequest userCreateRequest){
+        return ResponseEntity.ok(userService.create(userCreateRequest));
     }
 
     @GetMapping("/{id}")
@@ -29,23 +31,30 @@ public class UserController{
         return ResponseEntity.ok(userService.findById(id));
     }
 
-    @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<User> createUser (@RequesBody UserCreateRequest userCreateRequest){
-        return ResponseEntity.ok(userService.create(userCreateRequest));
-    }
+    // Duplicate createUser method removed
 
-    @PutMapping
+    @PutMapping ("/{id}")
     @PreAuthorize("hasRole('COORDINADOR')")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest){
-        return ResponseEntity.ok(userService.update(id, userUpdateRequest));
+        try {
+            return ResponseEntity.ok(userService.update(id, userUpdateRequest));
+        } catch (RuntimeException e) {
+            if(e.getMessage().contains("No tiene permisos")){
+                return ResponseEntity.status(403).body(new MessageResponse(e.getMessage()));
+            }
+            return ResponseEntity badRequest().body(new MessageResponse(e. getMessage()));
+        }
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> deleteUser(@PathVariable Long id, @RequesBody User user){
-        userService.delete(id);
-        return ResponseEntity.ok(new MessageResponse("Usuario eliminada exitosamente"));
+    public ResponseEntity<User> deleteUser(@PathVariable Long id){
+        try{
+            userService.delete(id);
+            return ResponseEntity.ok(new MessageResponse("Usuario eliminado exitosamente"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
     }
 
 }
