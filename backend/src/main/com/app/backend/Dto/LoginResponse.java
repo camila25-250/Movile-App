@@ -1,6 +1,6 @@
-package com.app.backend.Dto;
+package com.app.backend.dto;
 
-import com.app.backend.models.User;
+import com.app.backend.model.User;
 
 public class LoginResponse{
 
@@ -20,7 +20,7 @@ public class LoginResponse{
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
-        this.role = user.getRole();
+        this.role = user.getRole().name();
     }
 
     public String getToken(){
@@ -58,7 +58,7 @@ public class LoginResponse{
         return email;
     }
 
-    public void setEmail(Strng email){
+    public void setEmail(String email){
         this.email = email;
     }
 

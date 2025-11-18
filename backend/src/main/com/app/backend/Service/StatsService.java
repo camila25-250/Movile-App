@@ -1,8 +1,7 @@
-
 package com.app.backend.service;
 
 import com.app.backend.repository.UserRepository;
-import org.app.backend.repository.CategoryRepository;
+import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.SubcategoryRepository;
 import com.app.backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class StatsService{
+public class StatsService {
     @Autowired
-    private UserRepository UserRepository;
+    private UserRepository userRepository;
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
@@ -21,7 +20,7 @@ public class StatsService{
     @Autowired
     private ProductRepository productRepository;
 
-    public Map<String, Long> getStats(){
+    public Map<String, Long> getStats() {
         Map<String, Long> stats = new HashMap<>();
         stats.put("users", userRepository.count());
         stats.put("categories", categoryRepository.count());

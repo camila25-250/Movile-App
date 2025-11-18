@@ -1,7 +1,7 @@
-packagen com.app.backend.model;
+package com.app.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jackson.persistence,*;
+import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -45,7 +45,7 @@ public class User{
         return username;
     }
 
-    public void setPasssword(String password){
+    public void setPassword(String password){
         this.password = password;
     }
 

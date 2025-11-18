@@ -1,10 +1,10 @@
-package com.app.backend.Dto;
+package com.app.backend.dto;
 
 public  class LoginRequest{
     private String username;
     private String password;
 
-    public LoginRequist(){
+    public LoginRequest(){
 
     }
     public String getUsername(){

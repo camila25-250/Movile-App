@@ -1,26 +1,25 @@
 package com.app.backend.controller;
 
-import com.app.backend.dto.loginRequest;
-import com.app.backend.dto.loginResponse;
+import com.app.backend.dto.LoginRequest;
+import com.app.backend.dto.LoginResponse;
 import com.app.backend.model.User;
 import com.app.backend.repository.UserRepository;
-import com.com.app.backend.security.JwtTokenProvider;
+import com.app.backend.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.security.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequesMapping("/api/auth")
-@CrossOrigin(origin = "*")
-
-public class AuthController{
+@RequestMapping("/api/auth")
+@CrossOrigin(origins = "*")
+public class AuthController {
 
     @Autowired
-    public AuthenticationManager AuthenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtTokenProvider tokenProvider;
@@ -29,24 +28,25 @@ public class AuthController{
     private UserRepository userRepository;
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> login(@RequesBody loginRequest loginRequest){
-        try{
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        System.out.println("Intentando login para usuario: " + loginRequest.getUsername());
+        try {
             Authentication authentication = authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(
+                new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(),
                     loginRequest.getPassword()));
-            
-            SecurityContextHolder.getContext().
-            setAuthentication(authentication);
-            String jwt = tokenProvider.generateToken
-            (authentication);
+            System.out.println("Autenticación exitosa para usuario: " + loginRequest.getUsername());
 
-            User user = userRepository.findByUsername
-            (loginRequest.getUsername())
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = tokenProvider.generateToken(authentication);
+
+            User user = userRepository.findByUsername(loginRequest.getUsername())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+            System.out.println("Usuario encontrado en base de datos: " + user.getUsername() + ", activo: " + user.getActive() + ", rol: " + user.getRole());
 
-            return ResponseEntity.ok(new loginResponse(jwt, user));
-        } catch (Exception e){
+            return ResponseEntity.ok(new LoginResponse(jwt, user));
+        } catch (Exception e) {
+            System.out.println("Error en login: " + e.getMessage());
             return ResponseEntity.badRequest().body("{\"error\": \"Credenciales invalidas\"}");
         }
     }

@@ -1,22 +1,21 @@
 package com.app.backend.controller;
 
-import com.app.backend.Service.StatsService;
+import com.app.backend.service.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequesMapping;
-import ore.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequesMapping("/api/stats")
-
-public class StatsController{
+@RequestMapping("/api/stats")
+public class StatsController {
 
     @Autowired
-    private StatsService StatsService;
+    private StatsService statsService;
 
     @GetMapping("")
-    public Map<String, Long> getStats(){
+    public Map<String, Long> getStats() {
         return statsService.getStats();
     }
 }

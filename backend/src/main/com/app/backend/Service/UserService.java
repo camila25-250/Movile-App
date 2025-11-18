@@ -1,8 +1,8 @@
-package com.app.backend.Service;
+package com.app.backend.service;
 
-import com.app.backend.Dto.UserCreateRequest;
-import com.app.backend.Dto.UserUpdateRequest;
-import com.app.backend.models.User;
+import com.app.backend.dto.UserCreateRequest;
+import com.app.backend.dto.UserUpdateRequest;
+import com.app.backend.model.User;
 import com.app.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,23 +12,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService{
-    
+public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public User findById(Long id){
-        return userRepository.findById(id).orElse(() -> new RuntimeException("Usuario no encontrado"));
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
-    public User create(UserCreateRequest request){
+    public User create(UserCreateRequest request) {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -38,43 +38,46 @@ public class UserService{
         return userRepository.save(user);
     }
 
-    public User update(UserUpdateRequest request){
+    public User update(Long id, UserUpdateRequest request) {
         User user = findById(id);
 
-        if(id == 1L && isCoordinador()){
-            throw new RuntimeException("No tienes permisos para modificar, el administrador principal");
-
+        if (id == 1L && isCoordinador()) {
+            throw new RuntimeException("No tienes permisos para modificar el administrador principal");
         }
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        user.setRole(request.getRole());
-        user.setActive(request.getActive());
-
-        if(request.getPassword() != null && !request.getPassword().isEmpty()){
-            user.setPassword(passwordEncoder.emcode(request.getPassword()));
+        if (request.getUsername() != null && !request.getUsername().isEmpty()) {
+            user.setUsername(request.getUsername());
+        }
+        if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+            user.setEmail(request.getEmail());
+        }
+        if (request.getRole() != null) {
+            user.setRole(request.getRole());
+        }
+        if (request.getActive() != null) {
+            user.setActive(request.getActive());
+        }
+        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
 
         return userRepository.save(user);
     }
 
-    private boolean isCoordinador(){
+    private boolean isCoordinador() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication != null && authentication.getAuthentication() != null){
-            return authentication.getAuthorities().steam()
-            .anyMatch(auth -> auth.getAuthority().equals("ROLE_COORDINADOR"));
+        if(authentication != null && authentication.getAuthorities() != null){
+            return authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_COORDINADOR"));
         }
         return false;
     }
     public void delete(Long id){
         User user = findById(id);
 
-        if(id == null){
+        if(id == 1L){
             throw new RuntimeException("No se puede eliminar administrador principal");
         }
 
-        if(user == null){
-            throw new RuntimeException("Usuario no encontrado")
-        }
         userRepository.delete(user);
     }
 }

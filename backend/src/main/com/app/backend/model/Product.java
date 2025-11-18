@@ -1,12 +1,24 @@
 package com.app.backend.model;
 
 import jakarta.persistence.*;
+import com.app.backend.model.Category;
+import com.app.backend.model.Subcategory;
 import lombok.*;
 
 @Data
 @Entity
 @Table(name = "products")
 public class Product{
+        @Transient
+        private Long subcategoryId;
+
+        public Long getSubcategoryId() {
+            return subcategoryId;
+        }
+
+        public void setSubcategoryId(Long subcategoryId) {
+            this.subcategoryId = subcategoryId;
+        }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,15 +50,15 @@ public class Product{
     }
 
     public String getName(){
-        this.name = name;
+        return name;
     }
 
-    public String setDescription(String descripcion){
-        this.decription = description;
+    public void setDescripcion(String descripcion){
+        this.descripcion = descripcion;
     }
 
-    public getDescription(){
-        return description;
+    public String getDescripcion(){
+        return descripcion;
     }
 
     public void setPrice(Double price){
@@ -72,20 +84,20 @@ public class Product{
     public Boolean getActive(){
         return active;
     }
-
-    public Category getCategory(){
-        return category;
-    }
-
+    
     public void setCategory(Category category){
         this.category = category;
     }
 
-    public Category getSubcategory(){
-        return subcategory;
+    public Category getCategory(){
+        return category;
     }
-
+    
     public void setSubcategory(Subcategory subcategory){
         this.subcategory = subcategory;
+    }
+    
+    public Subcategory getSubcategory(){
+        return subcategory;
     }
 }

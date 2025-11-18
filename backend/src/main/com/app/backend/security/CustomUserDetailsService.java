@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
+import java.util.Collection;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
@@ -19,15 +20,22 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        User user = userRepository.finbyUsername(username);
-        .orElseThrow(() -> new  UsernameNotFoundException("Usario no encontrado" + username));
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado " + username));
 
-        return new org.springframework.sercurity.core.userdetails.User(user.getUsername(), user.getPassword(), user.getActive(), accountNonExpired: true, credentialsNonExpired: true
-        , accountNonLocked: true, getAuthonrities(user));
+        return new org.springframework.security.core.userdetails.User(
+            user.getUsername(),
+            user.getPassword(),
+            user.getActive(), // asegúrate que el método sea boolean
+            true, // accountNonExpired
+            true, // credentialsNonExpired
+            true, // accountNonLocked
+            getAuthorities(user)
+        );
 
     }
 
-    private Collection<? extends GrantedAuthority>getAuthonrities(User user){
+    private Collection<? extends GrantedAuthority> getAuthorities(User user){
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
 }

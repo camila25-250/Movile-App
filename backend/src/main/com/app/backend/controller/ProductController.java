@@ -4,60 +4,60 @@ import com.app.backend.model.Product;
 import com.app.backend.service.ProductService;
 import com.app.backend.dto.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.Http.MediaType;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequesMapping("/api/product")
+@RequestMapping("/api/product")
 @CrossOrigin(origins = "*")
-public class ProductController{
-    
+public class ProductController {
+
     @Autowired
     private ProductService productService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<List<Product>> getAllProduct(){
+    public ResponseEntity<List<Product>> getAllProduct() {
         return ResponseEntity.ok(productService.findAll());
     }
 
     @GetMapping("/category/{categoryId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable Long categoryId){
+    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable Long categoryId) {
         return ResponseEntity.ok(productService.findByCategoryId(categoryId));
     }
 
     @GetMapping("/subcategory/{subcategoryId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<List<Product>> getProductBySubcategory(@PathVariable Long subcategoryId){
+    public ResponseEntity<List<Product>> getProductBySubcategory(@PathVariable Long subcategoryId) {
         return ResponseEntity.ok(productService.findBySubcategoryId(subcategoryId));
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id){
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<Category> createProduct (@RequesBody Product product){
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         return ResponseEntity.ok(productService.create(product));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product){
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         return ResponseEntity.ok(productService.update(id, product));
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> deleteProduct(@PathVariable Long id, @RequesBody Product product){
+    public ResponseEntity<MessageResponse> deleteProduct(@PathVariable Long id) {
         productService.delete(id);
-        return ResponseEntity.ok(new MessageResponse("Producto eliminada exitosamente"));
+        return ResponseEntity.ok(new MessageResponse("Producto eliminado exitosamente"));
     }
 }

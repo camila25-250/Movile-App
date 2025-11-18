@@ -3,12 +3,22 @@ package com.app.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.list;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "subcategories")
-public class Category{
+public class Subcategory{
+        @Transient
+        private Long categoryId;
+
+        public Long getCategoryId() {
+            return categoryId;
+        }
+
+        public void setCategoryId(Long categoryId) {
+            this.categoryId = categoryId;
+        }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,15 +45,15 @@ public class Category{
     }
 
     public String getName(){
-        this.name = name;
+        return name;
     }
 
-    public String setDescription(String descripcion){
-        this.decription = description;
+    public void setDescripcion(String descripcion){
+        this.descripcion = descripcion;
     }
 
-    public getDescription(){
-        return description;
+    public String getDescripcion(){
+        return descripcion;
     }
 
     public void setActive(Boolean active){

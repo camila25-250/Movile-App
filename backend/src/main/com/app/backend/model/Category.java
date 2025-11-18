@@ -3,7 +3,7 @@ package com.app.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.list;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,9 +24,9 @@ public class Category{
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Subcategory> Subcategories;
+    private List<Subcategory> subcategories;
 
-    public void setId(){
+    public void setId(Long id){
         this.id = id;
     }
 
@@ -42,12 +42,12 @@ public class Category{
         return name;
     }
 
-    public String setDescription(String descripcion){
-        this.decription = description;
+    public void setDescripcion(String descripcion){
+        this.descripcion = descripcion;
     }
 
-    public getDescription(){
-        return description;
+    public String getDescripcion(){
+        return descripcion;
     }
 
     public void setActive(Boolean active){

@@ -3,9 +3,10 @@ package com.app.backend.repository;
 import com.app.backend.model.Subcategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.Optional;
+//import java.util.Optional;
+import java.util.List;
 
 @Repository
-public interface SubcategoryRepository extends JpaRepository<Subcategory, Long>{
-    List<Subcategory> findByCategoryId(Long id);
+public interface SubcategoryRepository extends JpaRepository<Subcategory, Long> {
+    List<Subcategory> findByCategory_Id(Long id);
 }

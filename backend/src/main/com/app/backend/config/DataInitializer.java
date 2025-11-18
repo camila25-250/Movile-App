@@ -1,22 +1,17 @@
 package com.app.backend.config;
 
 import com.app.backend.model.User;
-import com.app.backend.model.Category;
 import com.app.backend.repository.UserRepository;
-import com.app.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframeworrk.boot.commandLineRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataInicializer implements commandLineRunner{
+public class DataInitializer implements CommandLineRunner{
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -27,7 +22,7 @@ public class DataInicializer implements commandLineRunner{
 
         //Eliminar y recrear usuario para asegurar contraseñas correctas
         if(userRepository.existsByUsername("admin")){
-            User existingAdmin = userRepository.findByUsername("admin").orgElse(null);
+            User existingAdmin = userRepository.findByUsername("admin").orElse(null);
             if (existingAdmin != null){
                 userRepository.delete(existingAdmin);
                 System.out.println("Usuario ADMIN existente eliminado");
@@ -35,7 +30,7 @@ public class DataInicializer implements commandLineRunner{
         }
 
         if(userRepository.existsByUsername("coordinador")){
-            User existingCoord = userRepository.findByUsername("coordinador").orgElse(null);
+            User existingCoord = userRepository.findByUsername("coordinador").orElse(null);
             if (existingCoord != null){
                 userRepository.delete(existingCoord);
                 System.out.println("Usuario COORDINADOR existente eliminado");
@@ -45,7 +40,7 @@ public class DataInicializer implements commandLineRunner{
         //Crear usuario ADMIN
         User admin = new User();
         admin.setUsername("admin");
-        admin.setPassword(passwordEncoder.encoder("admin123"));
+        admin.setPassword(passwordEncoder.encode("admin123"));
         admin.setEmail("admin@app.com");
         admin.setRole(User.Role.ADMIN);
         admin.setActive(true);
@@ -55,7 +50,7 @@ public class DataInicializer implements commandLineRunner{
         //Crear usuario COORDINADOR
         User coordinador = new User();
         coordinador.setUsername("coordinador");
-        coordinador.setPassword(passwordEncoder.encoder("coord123"));
+        coordinador.setPassword(passwordEncoder.encode("coord123"));
         coordinador.setEmail("coordinador@app.com");
         coordinador.setRole(User.Role.COORDINADOR);
         coordinador.setActive(true);
