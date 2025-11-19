@@ -1,7 +1,7 @@
-package com.app.backend.service;
+package com.app.backend.Service;
 
-import com.app.backend.dto.UserCreateRequest;
-import com.app.backend.dto.UserUpdateRequest;
+import com.app.backend.Dto.UserCreateRequest;
+import com.app.backend.Dto.UserUpdateRequest;
 import com.app.backend.model.User;
 import com.app.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,21 +44,30 @@ public class UserService {
         if (id == 1L && isCoordinador()) {
             throw new RuntimeException("No tienes permisos para modificar el administrador principal");
         }
-        if (request.getUsername() != null && !request.getUsername().isEmpty()) {
-            user.setUsername(request.getUsername());
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setRole(request.getRole());
+        user.setActive(request.getActive());
+
+            if(request.getPassword() != null && !request.getPassword().isEmpty()){
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
-        if (request.getEmail() != null && !request.getEmail().isEmpty()) {
-            user.setEmail(request.getEmail());
-        }
-        if (request.getRole() != null) {
-            user.setRole(request.getRole());
-        }
-        if (request.getActive() != null) {
-            user.setActive(request.getActive());
-        }
-        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
-        }
+        //
+        // if (request.getUsername() != null && !request.getUsername().isEmpty()) {
+        //     user.setUsername(request.getUsername());
+        // }
+        // if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+        //     user.setEmail(request.getEmail());
+        // }
+        // if (request.getRole() != null) {
+        //     user.setRole(request.getRole());
+        // }
+        // if (request.getActive() != null) {
+        //     user.setActive(request.getActive());
+        // }
+        // if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+        //     user.setPassword(passwordEncoder.encode(request.getPassword()));
+        // }//nuevos
 
         return userRepository.save(user);
     }
@@ -74,10 +83,13 @@ public class UserService {
     public void delete(Long id){
         User user = findById(id);
 
-        if(id == 1L){
+        if(id == 1L){//era null
             throw new RuntimeException("No se puede eliminar administrador principal");
         }
 
+        if(user == null){
+                throw new RuntimeException("Usuario no encontrado");
+        }
         userRepository.delete(user);
     }
 }

@@ -1,7 +1,7 @@
 package com.app.backend.controller;
 
-import com.app.backend.dto.LoginRequest;
-import com.app.backend.dto.LoginResponse;
+import com.app.backend.Dto.LoginRequest;
+import com.app.backend.Dto.LoginResponse;
 import com.app.backend.model.User;
 import com.app.backend.repository.UserRepository;
 import com.app.backend.security.JwtTokenProvider;

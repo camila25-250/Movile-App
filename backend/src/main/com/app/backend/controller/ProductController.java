@@ -1,8 +1,8 @@
 package com.app.backend.controller;
 
 import com.app.backend.model.Product;
-import com.app.backend.service.ProductService;
-import com.app.backend.dto.MessageResponse;
+import com.app.backend.Service.ProductService;
+import com.app.backend.Dto.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

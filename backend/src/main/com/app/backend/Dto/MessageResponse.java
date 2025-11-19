@@ -1,4 +1,4 @@
-package com.app.backend.dto;
+package com.app.backend.Dto;
 
 public class MessageResponse{
 

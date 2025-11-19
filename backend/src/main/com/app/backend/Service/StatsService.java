@@ -1,4 +1,4 @@
-package com.app.backend.service;
+package com.app.backend.Service;
 
 import com.app.backend.repository.UserRepository;
 import com.app.backend.repository.CategoryRepository;

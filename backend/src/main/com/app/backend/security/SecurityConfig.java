@@ -55,7 +55,7 @@ public class SecurityConfig{
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/categories/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_COORDINADOR")
+                .requestMatchers("/api/categories/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_COORDINADOR")//le agrego estos 2
                 .requestMatchers("/api/subcategories/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_COORDINADOR")
                 .anyRequest().authenticated());
 

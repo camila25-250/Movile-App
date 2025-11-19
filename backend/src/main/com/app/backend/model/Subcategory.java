@@ -9,16 +9,16 @@ import java.util.List;
 @Entity
 @Table(name = "subcategories")
 public class Subcategory{
-        @Transient
-        private Long categoryId;
+        // @Transient
+        // private Long categoryId;
 
-        public Long getCategoryId() {
-            return categoryId;
-        }
+        // public Long getCategoryId() {
+        //     return categoryId;
+        // }
 
-        public void setCategoryId(Long categoryId) {
-            this.categoryId = categoryId;
-        }
+        // public void setCategoryId(Long categoryId) {
+        //     this.categoryId = categoryId;
+        // }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

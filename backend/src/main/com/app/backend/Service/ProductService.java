@@ -1,4 +1,4 @@
-package com.app.backend.service;
+package com.app.backend.Service;
 
 import com.app.backend.model.Product;
 import com.app.backend.repository.ProductRepository;
@@ -8,8 +8,6 @@ import java.util.List;
 
 @Service
 public class ProductService {
-    @Autowired
-    private com.app.backend.repository.SubcategoryRepository subcategoryRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -27,16 +25,16 @@ public class ProductService {
     }
 
     public Product findById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrada"));
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
     }
 
     public Product create(Product product) {
-        if (product.getSubcategoryId() != null) {
-            com.app.backend.model.Subcategory subcategory = subcategoryRepository.findById(product.getSubcategoryId())
-                .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
-            product.setSubcategory(subcategory);
-            product.setCategory(subcategory.getCategory());
-        }
+        // if (product.getSubcategoryId() != null) {
+        //     com.app.backend.model.Subcategory subcategory = subcategoryRepository.findById(product.getSubcategoryId())
+        //         .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
+        //     product.setSubcategory(subcategory);
+        //     product.setCategory(subcategory.getCategory());
+        // }
         return productRepository.save(product);
     }
 
@@ -47,18 +45,20 @@ public class ProductService {
         product.setPrice(productDetails.getPrice());
         product.setStock(productDetails.getStock());
         product.setActive(productDetails.getActive());
+        product.setCategory(productDetails.getCategory());
+        product.setSubcategory(productDetails.getSubcategory());
         // Si se envía subcategoryId en el body, actualiza la subcategoría y la categoría
-        if (productDetails.getSubcategoryId() != null) {
-            com.app.backend.model.Subcategory subcategory = subcategoryRepository.findById(productDetails.getSubcategoryId())
-                .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
-            product.setSubcategory(subcategory);
-            product.setCategory(subcategory.getCategory());
-        } else if (productDetails.getSubcategory() != null) {
-            product.setSubcategory(productDetails.getSubcategory());
-            product.setCategory(productDetails.getSubcategory().getCategory());
-        } else if (productDetails.getCategory() != null) {
-            product.setCategory(productDetails.getCategory());
-        }
+        // if (productDetails.getSubcategoryId() != null) {
+        //     com.app.backend.model.Subcategory subcategory = subcategoryRepository.findById(productDetails.getSubcategoryId())
+        //         .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
+        //     product.setSubcategory(subcategory);
+        //     product.setCategory(subcategory.getCategory());
+        // } else if (productDetails.getSubcategory() != null) {
+        //     product.setSubcategory(productDetails.getSubcategory());
+        //     product.setCategory(productDetails.getSubcategory().getCategory());
+        // } else if (productDetails.getCategory() != null) {
+        //     product.setCategory(productDetails.getCategory());
+        // }
         return productRepository.save(product);
     }
 

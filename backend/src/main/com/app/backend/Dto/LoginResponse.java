@@ -1,4 +1,4 @@
-package com.app.backend.dto;
+package com.app.backend.Dto;
 
 import com.app.backend.model.User;
 
@@ -20,7 +20,7 @@ public class LoginResponse{
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
-        this.role = user.getRole().name();
+        this.role = user.getRole().name();//name no estaba
     }
 
     public String getToken(){
