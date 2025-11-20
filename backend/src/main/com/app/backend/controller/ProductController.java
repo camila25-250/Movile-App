@@ -5,9 +5,9 @@ import com.app.backend.Service.ProductService;
 import com.app.backend.Dto.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
@@ -48,7 +48,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.create(product));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping  //("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         return ResponseEntity.ok(productService.update(id, product));
@@ -56,7 +56,7 @@ public class ProductController {
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MessageResponse> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<MessageResponse> deleteProduct(@PathVariable Long id, @RequesBody Product product) {
         productService.delete(id);
         return ResponseEntity.ok(new MessageResponse("Producto eliminado exitosamente"));
     }

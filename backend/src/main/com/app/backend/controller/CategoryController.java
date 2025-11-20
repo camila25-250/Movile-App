@@ -36,7 +36,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.create(category));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping //("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
     public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
         return ResponseEntity.ok(categoryService.update(id, category));
@@ -44,7 +44,7 @@ public class CategoryController {
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MessageResponse> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<MessageResponse> deleteCategory(@PathVariable Long id, @RequestBody Category category) {
         categoryService.delete(id);
         return ResponseEntity.ok(new MessageResponse("Categoria eliminada exitosamente"));
     }

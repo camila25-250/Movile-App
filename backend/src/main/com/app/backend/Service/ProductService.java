@@ -17,11 +17,11 @@ public class ProductService {
     }
 
     public List<Product> findByCategoryId(Long categoryId) {
-        return productRepository.findByCategory_Id(categoryId);
+        return productRepository.findByCategoryId(categoryId);
     }
 
     public List<Product> findBySubcategoryId(Long subcategoryId) {
-        return productRepository.findBySubcategory_Id(subcategoryId);
+        return productRepository.findBySubcategoryId(subcategoryId);
     }
 
     public Product findById(Long id) {

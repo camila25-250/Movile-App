@@ -20,10 +20,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<User> createUser(@RequestBody UserCreateRequest userCreateRequest) {
-        return ResponseEntity.ok(userService.create(userCreateRequest));
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/{id}")
@@ -32,30 +32,33 @@ public class UserController {
         return ResponseEntity.ok(userService.findById(id));
     }
 
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
+    public ResponseEntity<User> createUser(@RequestBody UserCreateRequest userCreateRequest) {
+        return ResponseEntity.ok(userService.create(userCreateRequest));
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('COORDINADOR')")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
         try {
             return ResponseEntity.ok(userService.update(id, userUpdateRequest));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            if(e.getMessage().contains("No tiene permisos")){
+                return ResponseEntity.status(403).body(new MessageResponse(e.getMessage()));;
+        }
+        return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MessageResponse> deleteUser(@PathVariable Long id) {
-        try {
+    public ResponseEntity<User> deleteUser(@PathVariable Long id){
+        try{
             userService.delete(id);
             return ResponseEntity.ok(new MessageResponse("Usuario eliminado exitosamente"));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
-    }
-
-    @GetMapping("")
-    @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.findAll());
     }
 }

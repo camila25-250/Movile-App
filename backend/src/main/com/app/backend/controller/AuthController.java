@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class AuthController {
 
     @Autowired
@@ -35,18 +35,17 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(),
                     loginRequest.getPassword()));
-            System.out.println("Autenticación exitosa para usuario: " + loginRequest.getUsername());
+            //System.out.println("Autenticación exitosa para usuario: " + loginRequest.getUsername());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = tokenProvider.generateToken(authentication);
 
             User user = userRepository.findByUsername(loginRequest.getUsername())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-            System.out.println("Usuario encontrado en base de datos: " + user.getUsername() + ", activo: " + user.getActive() + ", rol: " + user.getRole());
-
+            //System.out.println("Usuario encontrado en base de datos: " + user.getUsername() + ", activo: " + user.getActive() + ", rol: " + user.getRole());
             return ResponseEntity.ok(new LoginResponse(jwt, user));
         } catch (Exception e) {
-            System.out.println("Error en login: " + e.getMessage());
+            //System.out.println("Error en login: " + e.getMessage());
             return ResponseEntity.badRequest().body("{\"error\": \"Credenciales invalidas\"}");
         }
     }

@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.8"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-        http://maven.apache.org/xds/maven-4.0.0.xsd">
+        http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -41,20 +41,26 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>8.0.33</version>
+            <scope>runtime</scope>
         </dependency>
+
+        <!-- <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.0.33</version>
+        </dependency> -->
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
             <version>0.12.5</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
             <version>0.12.5</version>
             <scope>runtime</scope>
-        </dependency>
+        </dependency> -->
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -87,6 +93,7 @@
         <resources>
             <resource>
                 <directory>src/main/com/app/backend/resources</directory>
+                <!-- para que Maven incluya los archivos de ese directorio como recursos en tu proyecto. -->
             </resource>
         </resources>
         <plugins>
@@ -94,7 +101,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.app.backend.BackendApplication</mainClass>
+                    <!-- <mainClass>com.app.backend.BackendApplication</mainClass> -->
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

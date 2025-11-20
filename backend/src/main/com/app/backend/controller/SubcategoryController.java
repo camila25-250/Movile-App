@@ -42,7 +42,7 @@ public class SubcategoryController {
         return ResponseEntity.ok(subcategoryService.create(subcategory));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping  //("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDINADOR')")
     public ResponseEntity<Subcategory> updateSubcategory(@PathVariable Long id, @RequestBody Subcategory subcategory) {
         return ResponseEntity.ok(subcategoryService.update(id, subcategory));
@@ -50,7 +50,7 @@ public class SubcategoryController {
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MessageResponse> deleteSubcategory(@PathVariable Long id) {
+    public ResponseEntity<MessageResponse> deleteSubcategory(@PathVariable Long id, @RequesBody Subcategory subcategory) {
         subcategoryService.delete(id);
         return ResponseEntity.ok(new MessageResponse("Subcategoria eliminada exitosamente"));
     }
