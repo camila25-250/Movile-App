@@ -141,9 +141,9 @@ export default function CategoriesScreen() {
                     <Text style={[categoriesStyles.actionButtonText, categoriesStyles.editButtonText]}>Editar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[categoriesStyles.actionButton, item.active ? categoriesStyles.deleteButton : categoriesStyles.editingButton]}
+                    style={[categoriesStyles.actionButton, item.active ? categoriesStyles.deleteButton : categoriesStyles.editButton]}
                     onPress={() => handleToggleActive(item)}>
-                    <Text style={[categoriesStyles.actionButtonText, item.active ? categoriesStyles.deleteButton : categoriesStyles.editingButton]}>
+                    <Text style={[categoriesStyles.actionButtonText, item.active ? categoriesStyles.deleteButton : categoriesStyles.editButton]}>
                     {item.active ? 'Desactivar' : 'Activar'}
                     </Text>
                 </TouchableOpacity>
